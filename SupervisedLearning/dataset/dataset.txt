@@ -1,0 +1,6 @@
+1. Dataset House price prediction
+  https://www.kaggle.com/datasets/shree1992/housedata
+
+2. Dataset Heart Failure Prediction Dataset
+  https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction
+  
