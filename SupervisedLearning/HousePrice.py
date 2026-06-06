@@ -1,5 +1,6 @@
 from src.data_loader import DataLoader
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -43,6 +44,18 @@ def main():
 
 
     #============== Further EDA & Visualization ==============
+    #Target Variable Analysis (Data distribution, Skewness, Outlier)    
+    sns.histplot(df['price'], kde=True)
+    plt.show()
+
+    #Outlier Detection
+    sns.boxplot(y=df['price'])
+    plt.show()
+
+    #Correlation Analysis
+    corr = df.corr(numeric_only=True)
+    sns.heatmap(corr, cmap='coolwarm')
+    plt.show()
     
     
 
