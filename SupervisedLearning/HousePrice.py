@@ -1,26 +1,27 @@
 from src.data_loader import DataLoader
 
 
+
 def main():
-    # Load Data
+    #Load Data
     path = r"dataset\HousePrice.csv"
     loader = DataLoader(path)
 
     df = loader.load_data()
-
     print("Loaded dataset from:", path)
+
+    
+    #======================= Initial EDA =======================
     print("Rows:", df.shape[0])
     print("Columns:", df.shape[1])
 
-
-    #======================= Initial EDA =======================
-    # View the first few rows (default is 5 rows)
+    #View the first few rows (default is 5 rows)
     print(df.head())
 
-    # Check structure, data types, missing values
+    #Check structure, data types, missing values
     print(df.info())
 
-    # Summary statistics
+    #Summary statistics
     print(df.describe())
 
     
@@ -31,18 +32,18 @@ def main():
     print(df.isna().sum())
     print()
 
-    # Check data price
+    #Check data price
     print("Rows with price <= 0:", (df["price"] <= 0).sum())
 
     #Count duplicates
     print('Number of duplicate data :', df.duplicated().sum())
 
-    # # Remove duplicates
+    # #Remove duplicates
     # df = df.drop_duplicates()
 
 
-
     #============== Further EDA & Visualization ==============
+    
     
 
 if __name__ == "__main__":
