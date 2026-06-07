@@ -45,16 +45,22 @@ def main():
 
     #============== Further EDA & Visualization ==============
     #Target Variable Analysis (Data distribution, Skewness, Outlier)    
-    sns.histplot(df['price'], kde=True)
-    plt.show()
+    fig, axes = plt.subplots(1, 2, figsize=(12,4))
+    sns.histplot(df['price'], kde=True, ax=axes[0])
+    axes[0].set_title('Price Distribution')
 
     #Outlier Detection
-    sns.boxplot(y=df['price'])
+    sns.boxplot(y=df['price'], ax=axes[1])
+    axes[1].set_title('Price Outliers')
+    fig.suptitle("Exploratory Data Analysis (Target Variable Analysis)")
+    fig.tight_layout()
     plt.show()
 
+    
     #Correlation Analysis
     corr = df.corr(numeric_only=True)
     sns.heatmap(corr, cmap='coolwarm')
+    plt.title("Correlation Analysis")
     plt.show()
     
     
