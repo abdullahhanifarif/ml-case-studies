@@ -56,12 +56,34 @@ def main():
     fig.tight_layout()
     plt.show()
 
+    #Filter data ($0 > price  < $2.000.000)
+    df = df[(df['price'] > 0) & (df['price'] < 2000000)]
+
     
     #Correlation Analysis
     corr = df.corr(numeric_only=True)
     sns.heatmap(corr, cmap='coolwarm')
     plt.title("Correlation Analysis")
     plt.show()
+
+
+    #================= Feature Engineering Insight =================
+    #effective age of the house
+    df['date'] = pd.to_datetime(df['date'])
+
+    df['effective_year'] = np.where(
+        df['yr_renovated'] > 0,
+        df['yr_renovated'],
+        df['yr_built']
+    )
+
+    df['effective_age'] = (
+        df['date'].dt.year - df['effective_year']
+    )
+
+
+    #Building to land area ratio
+    df['BuildingLotRatio'] = (df['sqft_living'] / df['sqft_lot'])
     
     
 
