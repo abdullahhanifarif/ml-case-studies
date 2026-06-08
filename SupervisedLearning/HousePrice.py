@@ -1,4 +1,6 @@
 from src.data_loader import DataLoader
+from src.preprocessor import Preprocessor
+from src.model_trainer import ModelTrainer
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -119,7 +121,19 @@ def main():
 
 
 
-    #=========================================== TRAINING DATA ============================================
+    #=========================================== MODEL TRAINING ============================================
+    trainer = ModelTrainer()
+
+    models_single = trainer.train_regression(
+        X_train,
+        y_train
+    )
+    models_multiple = trainer.train_regression(
+        X_multi_train,
+        y_multi_train
+    )
+
+
     
     
 
