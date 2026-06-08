@@ -1,8 +1,12 @@
 from src.data_loader import DataLoader
 from src.preprocessor import Preprocessor
 from src.model_trainer import ModelTrainer
+from src.evaluator import Evaluator
+
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main():
@@ -113,11 +117,11 @@ def main():
 
     #split data
     data = preprocessor.preprocess(y,x)
-    X_train, X_test, y_train, y_test = data
+    x_train, x_test, y_train, y_test = data
 
     #split data + convert nominal data ('city','statezip') to One Hot Encoding
     data_multi = preprocessor.preprocess_with_dummies(y,x_multi,['city','statezip'])
-    X_multi_train, X_multi_test, y_multi_train, y_multi_test = data_multi
+    x_multi_train, x_multi_test, y_multi_train, y_multi_test = data_multi
 
 
 
@@ -125,13 +129,44 @@ def main():
     trainer = ModelTrainer()
 
     models_single = trainer.train_regression(
-        X_train,
+        x_train,
         y_train
     )
     models_multiple = trainer.train_regression(
-        X_multi_train,
+        x_multi_train,
         y_multi_train
     )
+
+
+
+
+    #============================================== Evaluation ==============================================
+    evaluator = Evaluator()
+
+    results_single = evaluator.evaluate_regression(
+        models_single,
+        x_test,
+        y_test,
+    )
+    for x, y in results_single.items():
+        print(x,"- Single ('sqft_living')")
+        print(f"MSE (Mean Squared Error)        : {y['MSE']:,.2f}")
+        print(f"RMSE (Root Mean Squared Error)  : {y['RMSE']:,.2f}")
+        print(f"MAE (Mean Absolute Error)       : ${y['MAE']:,.0f}")
+        print(f"R²(Coefficient of Determination): {y['R2']:,.2f}\n")
+    
+
+    results_multiple = evaluator.evaluate_regression(
+        models_multiple,
+        x_multi_test,
+        y_multi_test,
+    )
+    for x, y in results_multiple.items():
+        print(x,"- Multiple")
+        print(f"MSE (Mean Squared Error)        : {y['MSE']:,.2f}")
+        print(f"RMSE (Root Mean Squared Error)  : {y['RMSE']:,.2f}")
+        print(f"MAE (Mean Absolute Error)       : ${y['MAE']:,.0f}")
+        print(f"R²(Coefficient of Determination): {y['R2']:,.2f}\n")
 
 
     
