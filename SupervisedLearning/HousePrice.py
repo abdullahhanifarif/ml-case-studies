@@ -2,6 +2,7 @@ from src.data_loader import DataLoader
 from src.preprocessor import Preprocessor
 from src.model_trainer import ModelTrainer
 from src.evaluator import Evaluator
+from src.visualization import Visualization
 
 import pandas as pd
 import seaborn as sns
@@ -167,6 +168,16 @@ def main():
         print(f"RMSE (Root Mean Squared Error)  : {y['RMSE']:,.2f}")
         print(f"MAE (Mean Absolute Error)       : ${y['MAE']:,.0f}")
         print(f"R²(Coefficient of Determination): {y['R2']:,.2f}\n")
+
+
+
+    #============================================== Visualization ==============================================
+    viz = Visualization()
+
+    # Compare model
+    viz.compare_models(results_single, "Single ('sqft_living')")
+
+    viz.compare_models(results_multiple, "Multiple")
 
 
     
