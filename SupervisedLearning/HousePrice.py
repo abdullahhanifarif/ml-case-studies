@@ -12,7 +12,7 @@ def main():
     print("Loaded dataset from:", path)
 
     
-    #======================= Initial EDA =======================
+    #============================================= Initial EDA =============================================
     print("Rows:", df.shape[0])
     print("Columns:", df.shape[1])
 
@@ -27,7 +27,7 @@ def main():
 
     
 
-    #===================== DATA CLEANING ======================
+    #=========================================== DATA CLEANING ============================================
     #Check missing values
     print("\n","Missing values:")
     print(df.isna().sum())
@@ -43,7 +43,7 @@ def main():
     # df = df.drop_duplicates()
 
 
-    #============== Further EDA & Visualization ==============
+    #==================================== Further EDA & Visualization ====================================
     #Target Variable Analysis (Data distribution, Skewness, Outlier)    
     fig, axes = plt.subplots(1, 2, figsize=(12,4))
     sns.histplot(df['price'], kde=True, ax=axes[0])
@@ -67,7 +67,7 @@ def main():
     plt.show()
 
 
-    #================= Feature Engineering Insight =================
+    #===================================== Feature Engineering Insight =====================================
     #effective age of the house
     df['date'] = pd.to_datetime(df['date'])
 
@@ -81,9 +81,45 @@ def main():
         df['date'].dt.year - df['effective_year']
     )
 
-
     #Building to land area ratio
     df['BuildingLotRatio'] = (df['sqft_living'] / df['sqft_lot'])
+
+
+
+    #=================== PREPROCESSING (Selecting Target&feature variables + Splitting) ===================
+    preprocessor = Preprocessor(df)
+    #Selecting the target variable (Y)
+    y ='price'
+    
+    #Selecting the feature variables (X)
+    x =['sqft_living']
+    x_multi = [
+        'sqft_living',
+        'sqft_above',
+        'bathrooms',
+        'bedrooms',
+        'view',
+        'floors',
+        'effective_age',
+        'BuildingLotRatio',
+        'sqft_lot',
+        'sqft_basement',
+        'condition',
+        'statezip',
+        'city'
+    ]
+
+    #split data
+    data = preprocessor.preprocess(y,x)
+    X_train, X_test, y_train, y_test = data
+
+    #split data + convert nominal data ('city','statezip') to One Hot Encoding
+    data_multi = preprocessor.preprocess_with_dummies(y,x_multi,['city','statezip'])
+    X_multi_train, X_multi_test, y_multi_train, y_multi_test = data_multi
+
+
+
+    #=========================================== TRAINING DATA ============================================
     
     
 
