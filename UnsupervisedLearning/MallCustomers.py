@@ -1,4 +1,10 @@
 from src.data_loader import DataLoader
+from src.model_trainer import ModelTrainer
+
+from sklearn.preprocessing import StandardScaler
+
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -82,6 +88,21 @@ def main():
     #SCALING THE DATA
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
+
+
+    #=========================================== MODEL TRAINING ============================================
+    trainer = ModelTrainer()
+    
+    #ELBOW METHOD
+    inertias = trainer.elbow_method(X_scaled)
+
+    plt.plot(range(1, len(inertias)+1), inertias, marker='x')
+    plt.xlabel('Number of Cluster')
+    plt.ylabel('Inertia')
+    plt.title("Elbow Method")
+    plt.show()
+
+    models = trainer.train_clustering(X_scaled, n=5)
 
 
 
