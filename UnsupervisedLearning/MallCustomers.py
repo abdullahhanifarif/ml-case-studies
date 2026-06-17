@@ -1,6 +1,7 @@
 from src.data_loader import DataLoader
 from src.model_trainer import ModelTrainer
 from src.evaluator import Evaluator
+from src.visualization import Visualizer
 
 from sklearn.preprocessing import StandardScaler
 
@@ -120,10 +121,38 @@ def main():
         for metric, value in metrics.items():
             print(f"{metric}: {value}")
 
+
+
+    #============================================== Visualization ==============================================
+    visualizer = Visualizer()
+
+    centers = scaler.inverse_transform(
+        models['KMeans'].cluster_centers_
+    )
+
+    #Visualization KMeans
+    visualizer.plot_clusters(
+        X_original=X,
+        labels=models['KMeans'].labels_,
+        centers=centers,
+        title="Customer Segmentation (KMeans)"
+    )
+
+    #Visualization Agglomerative Clustering
+    visualizer.plot_clusters(
+        X_original=X,
+        labels=models['Agglomerative Clustering'].labels_,
+        title="Agglomerative Clustering"
+    )
+
+    #Visualization DBSCAN
+    visualizer.plot_clusters(
+        X_original=X,
+        labels=models['DBSCAN'].labels_,
+        title="DBSCAN"
+    )
+
     
-
-
-
 
   
 
