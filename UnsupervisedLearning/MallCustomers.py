@@ -1,5 +1,6 @@
 from src.data_loader import DataLoader
 from src.model_trainer import ModelTrainer
+from src.evaluator import Evaluator
 
 from sklearn.preprocessing import StandardScaler
 
@@ -20,7 +21,7 @@ def main():
     print("Columns:", df.shape[1])
     print()
 
-    #============================== Initial EDA ==============================
+    #========================================== Initial EDA ==========================================
     # View the first few rows (default is 5 rows)
     print(df.head())
 
@@ -31,7 +32,7 @@ def main():
     print(df.describe())
 
 
-    #============================ DATA CLEANING =============================
+    #======================================== DATA CLEANING =========================================
     #Check missing values
     print("\n","Missing values:")
     print(df.isna().sum())
@@ -46,7 +47,7 @@ def main():
 
 
     
-    #===================== Further EDA & Visualization =====================
+    #================================= Further EDA & Visualization =================================
     #Check data Gender
     print(df['Gender'].value_counts())
 
@@ -76,7 +77,7 @@ def main():
     plt.show()
 
 
-    #========================== Feature Selection (X) ==========================
+    #===================================== Feature Selection (X) =====================================
     X = df[['Annual Income (k$)','Spending Score (1-100)']]
     
     plt.figure(figsize=(8, 6))
@@ -90,7 +91,7 @@ def main():
     X_scaled = scaler.fit_transform(X)
 
 
-    #=========================================== MODEL TRAINING ============================================
+    #========================================= MODEL TRAINING ==========================================
     trainer = ModelTrainer()
     
     #ELBOW METHOD
@@ -103,6 +104,23 @@ def main():
     plt.show()
 
     models = trainer.train_clustering(X_scaled, n=5)
+
+
+
+    #============================================ Evaluation ============================================
+    evaluator = Evaluator()
+    results = evaluator.evaluate_models(
+        X_scaled,
+        models
+    )
+
+    for model_name, metrics in results.items():
+        print(f"\n{model_name}  :")
+
+        for metric, value in metrics.items():
+            print(f"{metric}: {value}")
+
+    
 
 
 
